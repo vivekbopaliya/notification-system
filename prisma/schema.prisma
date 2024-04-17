@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model user {
+  id                Int      @id @default(autoincrement())
+  created_time      DateTime @default(now())
+  email             String   @unique
+  first_name        String?
+  last_name         String?
+  gender            String?
+  profile_image_url String?
+  phone_number      Int
+  user_id           String   @unique
+}
+
+// model payments {
+//   id              Int      @id @default(autoincrement())
+//   created_time    DateTime @default(now())
+//   payment         String
+//   type            String
+//   email           String
+//   amount          String
+//   payment_time    String
+//   payment_date    String
+//   receipt_email   String
+//   receipt_url     String
+//   payment_details String
+//   billing_details String
+//   currency        String
+// }
+enum Status {
+  DONE
+  UPCOMING
+}
+
+enum Type {
+  BIRTHDAY
+  MARRIAGE
+  PARTY
+  OTHERS
+}
+
+model Event {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+  type        Type
+  status      Status  @default(UPCOMING)
+  date        String
+  text        String
+  userid      String  @unique
+}
+
+model Random {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+  time        String
+  text        String
+  userid      String  @unique
+}
