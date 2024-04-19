@@ -12,7 +12,7 @@ export default function Home() {
   const { isSignedIn } = useUser();
   const { signOut } = useClerk();
   return (
-    <div className="h-full w-full dark:bg-black bg-white   dark:bg-dot-white/[0.2] bg-dot-black/[0.2] relative flex items-center justify-center">
+    <div className="h-full w-full dark:bg-black bg-white -mt-20  dark:bg-dot-white/[0.2] bg-dot-black/[0.2] relative flex items-center justify-center">
       {/* Radial gradient for the container to give a faded look */}
       <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
       <div className="text-6xl sm:text-7xl  font-bold relative z-20 bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-500 py-8 sm:px-0 px-4">
@@ -30,9 +30,9 @@ export default function Home() {
               duration: 0.5,
               ease: [0.4, 0.0, 0.2, 1],
             }}
-            className="text-4xl   sm:text-6xl font-bold text-neutral-700 dark:text-white sm:max-w-4xl max-w-7xl leading-relaxed lg:leading-snug text-center mx-auto "
+            className="text-4xl   sm:text-6xl font-bold text-neutral-700 dark:text-white sm:max-w-4xl w-full leading-relaxed lg:leading-snug text-center mx-auto "
           >
-            Create your own{" "}
+            Create your own <br className="sm:hidden block" />
             <Highlight className="text-black dark:text-white">
               AI-enhanced
             </Highlight>{" "}
@@ -47,7 +47,7 @@ export default function Home() {
         <div className="flex justify-center items-center gap-3 pt-6 ">
           {!isSignedIn ? (
             <Link
-              href="sign-up/"
+              href="sign-in/"
               className={cn(buttonVariants({ variant: "secondary" }))}
             >
               Login
@@ -59,7 +59,7 @@ export default function Home() {
           )}
           <Link
             className={cn(buttonVariants(), "flex gap-1 ")}
-            href={"notification/create"}
+            href={"notification/"}
           >
             <p>Get started</p>
             <ChevronRight className="w-4 h-4" />

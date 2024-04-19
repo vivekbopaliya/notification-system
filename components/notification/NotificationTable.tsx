@@ -20,7 +20,7 @@ const NotificationTable = ({
   eventNotifications: NotificationTableProps[] | null;
 }) => {
   return (
-    <div className="w-full h-full overflow-y-auto">
+    <div className=" h-full sm:overflow-y-auto sm:max-w-xl pb-14 w-full">
       <EventTable eventNotifications={eventNotifications} />
     </div>
   );

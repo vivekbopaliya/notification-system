@@ -8,8 +8,6 @@ import Provider from "@/app/_trpc/provider";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/NavBar";
 import { dark } from "@clerk/themes";
-import { LogSnagProvider } from "@logsnag/next";
-import TierUpgrade from "@/components/TierUpgrade";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,32 +22,36 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
-      <html lang="en" suppressHydrationWarning>
-        <body
-          className={cn(
-            "min-h-screen  bg-[#0f172a]  text-slate-400 antialiased",
-            inter.className
-          )}
-        >
-          <Provider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
+    <html lang="en">
+      <body
+        className={cn(
+          "min-h-screen  bg-[#0f172a]  text-slate-400 antialiased",
+          inter.className
+        )}
+      >
+        <Provider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <ClerkProvider
+              appearance={{
+                baseTheme: dark,
+              }}
             >
-              <div className="w-screen h-screen fixed ">
+              <main className="w-screen h-screen fixed ">
                 <Navbar />
                 <main className="relative overflow-y-auto bg-black  w-full h-full">
                   {children}
                 </main>
-              </div>
-              <Toaster />
-            </ThemeProvider>
-          </Provider>
-        </body>
-      </html>
-    </ClerkProvider>
+                <Toaster />
+              </main>
+            </ClerkProvider>
+          </ThemeProvider>
+        </Provider>
+      </body>
+    </html>
   );
 }

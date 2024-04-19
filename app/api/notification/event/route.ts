@@ -9,22 +9,21 @@ export async function POST(req: Request) {
   try {
     const supabase = createClient();
     const user = await currentUser();
-    console.log(user);
+
     if (!user) {
       return new Response("Unauthorized!", { status: 401 });
     }
 
-    const { date, name, description, type, text, userid } =
+    const { name, event, description, date, phoneNumber } =
       createEventNotificaiton.parse(body);
 
     const data = await supabase.from("Event").insert({
-      name: name,
-      description: description,
-      type: type,
-      text: text,
-      date: date,
+      name,
+      event,
+      description,
+      date,
+      phoneNumber,
       status: "Upcoming",
-      userid,
     });
     console.log(data);
     if (data.error) {

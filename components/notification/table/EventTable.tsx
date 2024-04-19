@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   Table,
   TableBody,
@@ -19,11 +20,10 @@ import {
 interface NotificationTableProps {
   id: number;
   name: string;
+  event: string;
   description: string;
-  type: string;
   status: string;
   date: string;
-  text: string;
 }
 const EventTable = ({
   eventNotifications,
@@ -37,10 +37,10 @@ const EventTable = ({
   };
 
   return (
-    <Card className="my-4 bg-custom-slate-800/30 overflow-y-auto">
-      <CardHeader className="px-7">
-        <CardTitle>Event Notifications</CardTitle>
-        <CardDescription>
+    <Card className="my-4 bg-custom-slate-800/10 ">
+      <CardHeader className="px-7 sm:text-start text-center ">
+        <CardTitle>Notifications Dashboard</CardTitle>
+        <CardDescription className="font-medium">
           You will be reminded 24 hr before the date.
         </CardDescription>
       </CardHeader>
@@ -48,8 +48,7 @@ const EventTable = ({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead className="hidden sm:table-cell">Type</TableHead>
+              <TableHead>Event</TableHead>
               <TableHead className="hidden sm:table-cell">Status</TableHead>
               <TableHead>Date</TableHead>
             </TableRow>
@@ -59,15 +58,15 @@ const EventTable = ({
               return (
                 <TableRow key={data.id}>
                   <TableCell>
-                    <div className="font-medium">{data.name}</div>
-                    <div className="hidden text-sm text-muted-foreground md:inline">
+                    <div className=" font-normal sm:text-base text-sm">
+                      {data.event}
+                    </div>
+                    <div className="hidden  font-normal sm:text-sm text-xs text-muted-foreground md:inline">
                       {data.description}
                     </div>
                   </TableCell>
-                  <TableCell className="hidden sm:table-cell">
-                    {data.type}
-                  </TableCell>
-                  <TableCell className="hidden sm:table-cell">
+
+                  <TableCell className="hidden sm:table-cell font-normal">
                     <Badge
                       className={`text-xs ${
                         data.status === "Completed" ? "bg-white" : ""
@@ -76,7 +75,7 @@ const EventTable = ({
                       {data.status}
                     </Badge>
                   </TableCell>
-                  <TableCell className="table-cell">
+                  <TableCell className="table-cell font-normal">
                     {formatDate(data.date)}
                   </TableCell>
                 </TableRow>
@@ -84,8 +83,9 @@ const EventTable = ({
             })}
           </TableBody>
         </Table>
-        <div className="w-full h-full py-4 flex justify-center items-center font-light ">
-          {!eventNotifications && <p>You do not have any notification.</p>}
+
+        <div className="w-full h-full py-4 pt-7 sm:text-lg text-sm flex justify-center items-center font-light ">
+          {!eventNotifications && <p>You have not created any events yet.</p>}
         </div>
       </CardContent>
     </Card>

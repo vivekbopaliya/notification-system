@@ -6,7 +6,7 @@ const UserProfilePage = () => {
   const { isLoaded, isSignedIn, user } = useUser();
 
   return (
-    <div className="h-full flex items-center justify-center my-20 relative">
+    <div className="h-full flex items-center justify-center my-56 px-28 ">
       <UserProfile path="/user-profile" routing="path" />
     </div>
   );
