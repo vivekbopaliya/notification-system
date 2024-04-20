@@ -35,34 +35,12 @@ model user {
 //   billing_details String
 //   currency        String
 // }
-enum Status {
-  DONE
-  UPCOMING
-}
-
-enum Type {
-  BIRTHDAY
-  MARRIAGE
-  PARTY
-  OTHERS
-}
 
 model Event {
   id          Int     @id @default(autoincrement())
   name        String
+  event       String
   description String?
-  type        Type
-  status      Status  @default(UPCOMING)
   date        String
-  text        String
-  userid      String  @unique
-}
-
-model Random {
-  id          Int     @id @default(autoincrement())
-  name        String
-  description String?
-  time        String
-  text        String
-  userid      String  @unique
+  status      String
 }

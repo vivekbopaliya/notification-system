@@ -92,23 +92,20 @@ const Navbar = () => {
       </nav>
 
       <div className="flex w-full items-center gap-6 md:ml-auto md:gap-4 lg:gap-6">
-        <form className="ml-auto flex-1 sm:flex-initial">
+        <div className="ml-auto flex-1 sm:flex-initial">
           <div className="relative sm:flex hidden gap-6 text-white">
-            <LinkedinIcon
-              href="https://github.com/vivekbopaliya"
-              className="w-5 h-5 cursor-pointer"
-            />
+            <Link href="https://www.linkedin.com/in/vivek-bopaliya/">
+              <LinkedinIcon className="w-5 h-5 cursor-pointer" />
+            </Link>
 
-            <GithubIcon
-              href="https://github.com/vivekbopaliya/"
-              className="w-5 h-5 cursor-pointer"
-            />
-            <TwitterIcon
-              href="https://twitter.com/149in44"
-              className="w-5 h-5 cursor-pointer"
-            />
+            <Link href="https://github.com/vivekbopaliya/">
+              <GithubIcon className="w-5 h-5 cursor-pointer" />
+            </Link>
+            <Link href="https://twitter.com/149in44">
+              <TwitterIcon className="w-5 h-5 cursor-pointer" />
+            </Link>
           </div>
-        </form>
+        </div>
         {isSignedIn ? (
           <Profile />
         ) : (

@@ -1,5 +1,3 @@
-import { userCreate } from "@/utils/db/userCreate";
-import { userUpdate } from "@/utils/db/userUpdate";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { headers } from "next/headers";
 import { Webhook } from "svix";
@@ -53,35 +51,4 @@ export async function POST(req: Request) {
   // Get the ID and type
   const { id } = evt.data;
   const eventType = evt.type;
-
-  if (eventType === "user.created") {
-    try {
-      await userCreate({
-        email: payload?.data?.email_addresses?.[0]?.email_address,
-        first_name: payload?.data?.first_name,
-        last_name: payload?.data?.last_name,
-        profile_image_url: payload?.data?.profile_image_url,
-        user_id: payload?.data?.id,
-        phone_number: payload?.data?.phone_number,
-      });
-    } catch (error: any) {
-      throw new Error(error.message);
-    }
-  }
-
-  if (eventType === "user.updated") {
-    try {
-      await userUpdate({
-        email: payload?.data?.email_addresses?.[0]?.email_address,
-        first_name: payload?.data?.first_name,
-        last_name: payload?.data?.last_name,
-        profile_image_url: payload?.data?.profile_image_url,
-        user_id: payload?.data?.id,
-        phone_number: payload?.data?.phone_number,
-      });
-    } catch (error: any) {
-      throw new Error(error.message);
-    }
-  }
-  return new Response("", { status: 201 });
 }

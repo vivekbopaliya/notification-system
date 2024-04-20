@@ -1,4 +1,3 @@
-import { registerPayment } from "@/utils/db/registerPayment";
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
