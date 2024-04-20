@@ -2,7 +2,6 @@ import React from "react";
 
 import { createClient } from "@/utils/supabaseClient";
 import CreateNotification from "@/components/CreateNotification";
-import { usePhonenumber } from "@/utils/hook/usePhonenumber";
 import { currentUser } from "@clerk/nextjs/server";
 import NotificationTable from "@/components/notification/table/NotificationTable";
 const Page = async () => {
