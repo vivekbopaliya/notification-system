@@ -25,7 +25,6 @@ import axios, { AxiosError } from "axios";
 import { whatsappAxios } from "@/lib/utils/whatsapp/config";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import { getUserNotifications } from "@/server/actions/getUserNotifications";
 
 interface NotificationTableProps {
   id: number;

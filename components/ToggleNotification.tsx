@@ -13,7 +13,6 @@ import {
 import { Button } from "./ui/button";
 import { ListFilter } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { setNotificationType } from "@/lib/redux/notification";
 
 const ToggleNotification = () => {
   const dispatch = useDispatch();
