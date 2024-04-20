@@ -25,25 +25,10 @@ export async function POST(req: Request) {
       phoneNumber,
       status: "Upcoming",
     });
-    console.log(data);
     if (data.error) {
       return new Response("Error occured on database.", { status: 500 });
     }
-    const logsnag = new LogSnag({
-      token: "946e34bf729d8a2be2f1553bf3eb9ced",
-      project: "notification-system",
-    });
 
-    await logsnag.track({
-      channel: "notifications",
-      event: "Created new notification",
-      user_id: user.phoneNumbers[0].phoneNumber,
-      description: name,
-      icon: "🔥",
-      tags: {
-        type: type,
-      },
-    });
     return new Response("OK");
   } catch (error: any) {
     if (error instanceof ZodError) {

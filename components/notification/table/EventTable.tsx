@@ -84,7 +84,7 @@ const EventTable = ({
           </TableBody>
         </Table>
 
-        <div className="w-full h-full py-4 pt-7 sm:text-lg text-sm flex justify-center items-center font-light ">
+        <div className="w-full h-full py-4 pt-7 sm:pb-0 pb-14 sm:text-lg text-sm flex justify-center items-center font-light ">
           {!eventNotifications && <p>You have not created any events yet.</p>}
         </div>
       </CardContent>
