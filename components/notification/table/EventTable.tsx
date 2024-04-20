@@ -37,7 +37,7 @@ const EventTable = ({
   };
 
   return (
-    <Card className="my-4 bg-custom-slate-800/10 ">
+    <Card className="sm:my-4 my-3 bg-transparent sm:bg-custom-slate-800/10 w-full">
       <CardHeader className="px-7 sm:text-start text-center ">
         <CardTitle>Notifications Dashboard</CardTitle>
         <CardDescription className="font-medium">
@@ -84,8 +84,10 @@ const EventTable = ({
           </TableBody>
         </Table>
 
-        <div className="w-full h-full py-4 pt-7 sm:pb-0 pb-14 sm:text-lg text-sm flex justify-center items-center font-light ">
-          {!eventNotifications && <p>You have not created any events yet.</p>}
+        <div className="w-full h-full py-4 pt-7 sm:pb-2 pb-14  sm:text-base text-sm flex justify-center items-center font-light ">
+          {eventNotifications?.length === 0 && (
+            <p>You have not created any events yet.</p>
+          )}
         </div>
       </CardContent>
     </Card>

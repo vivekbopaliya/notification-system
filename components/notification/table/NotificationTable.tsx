@@ -29,12 +29,12 @@ const NotificationTable = ({
   eventNotifications: NotificationTableProps[] | null;
 }) => {
   return (
-    <main className=" h-full sm:max-w-xl  ">
-      <div className="sm:block hidden h-full sm:overflow-y-auto sm:max-w-xl  w-full">
+    <main className=" h-full  sm:w-5/12 ">
+      <div className="sm:block hidden h-full sm:overflow-y-auto w-full ">
         <EventTable eventNotifications={eventNotifications} />
       </div>
 
-      <div className="sm:hidden   flex justify-center items-center ">
+      <div className="sm:hidden mt-1  flex justify-center items-center ">
         <Drawer>
           <DrawerTrigger>
             <Button className="flex gap-2 rounded-full" variant={"secondary"}>

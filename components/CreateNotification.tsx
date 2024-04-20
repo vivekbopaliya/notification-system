@@ -123,7 +123,7 @@ const CreateNotification = ({
   });
 
   return (
-    <div className="flex flex-col  justify-center  items-center sm:pb-10 pb-3 relative ">
+    <div className="flex flex-col  justify-center  items-center sm:pb-10 pb-4 relative ">
       <section className="flex flex-col sm:pb-12 pb-8 gap-2 text-center ustify-center   items-center sm:mt-0   ">
         <h1 className="sm:text-4xl text-2xl text-white">
           Create Notification.
@@ -159,8 +159,8 @@ const CreateNotification = ({
         </DrawerTrigger>
         {drawerOpen && (
           <DrawerContent>
-            <div className="mx-auto pt-2 pb-4 w-full max-w-md">
-              <DrawerHeader>
+            <div className="mx-auto sm:py-0 py-2 w-full max-w-md">
+              <DrawerHeader className="my-2 sm:my-0">
                 <DrawerTitle className="text-white  sm:text-xl text-2xl">
                   Set up an Event for{" "}
                   <span className="text-[#0ea5e9]">
