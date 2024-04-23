@@ -33,15 +33,12 @@ export default function Home() {
             className="text-4xl   sm:text-6xl font-bold text-neutral-700 dark:text-white sm:max-w-4xl w-full leading-relaxed lg:leading-snug text-center mx-auto "
           >
             Create your own <br className="sm:hidden block" />
-            <Highlight className="text-black dark:text-white">
-              AI-enhanced
-            </Highlight>{" "}
-            Event notifications.
+            <Highlight>AI-enhanced</Highlight> Event notifications.
           </motion.h1>
         </HeroHighlight>
         <p className="text-neutral-500  max-w-lg mx-auto mt-1 font-normal text-sm text-center relative z-10">
-          Welcome to Notification-system, create the event and it is our
-          resposibility to not let you miss the deadline.
+          Welcome to our Notification System! Create your event, and we will
+          make sure you never miss the deadline.
         </p>
 
         <div className="flex justify-center items-center gap-3 pt-6 ">

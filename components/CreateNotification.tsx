@@ -1,31 +1,38 @@
 "use client";
 
 import React from "react";
-import { Calendar } from "./ui/calendar";
+import { ArrowRight, File, UnfoldVertical, WholeWord } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import toast from "react-hot-toast";
+import { CalendarDays } from "lucide-react";
 
-import { ArrowRight } from "lucide-react";
 import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "./ui/drawer";
-import { useMutation } from "@tanstack/react-query";
-import { createEventNotificaitonType } from "@/utils/validations/create-notification";
-import axios, { AxiosError } from "axios";
-import { whatsappAxios } from "@/lib/utils/whatsapp/config";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import Calendar from "./notification/states/Calendar";
+import PdfUpload from "./notification/states/PdfUpload";
+import { Textbox } from "./notification/states/Textbox";
+import NotificationTable from "@/components/notification/table/NotificationTable";
 
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
 interface NotificationTableProps {
   id: number;
   name: string;
@@ -35,182 +42,140 @@ interface NotificationTableProps {
   event: string;
 }
 
+type State = "CALENDAR" | "PDF" | "TEXT";
 const CreateNotification = ({
   eventNotifications,
 }: {
   eventNotifications: NotificationTableProps[] | null;
 }) => {
-  const [date, setDate] = React.useState<Date | undefined>(new Date());
-  const [event, setEvent] = React.useState<string>("");
-  const [description, setDescription] = React.useState<string>("");
-  const [drawerOpen, setDrawerOpen] = React.useState(false);
-
-  const route = useRouter();
+  const [state, setState] = React.useState<State>("CALENDAR");
   const { user } = useUser();
-
-  const phoneNumber = user?.phoneNumbers[0].phoneNumber.slice(1);
-  const userName = user?.firstName + " " + user?.lastName;
-
-  const formatDateForDatabase = (date: Date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
-    const day = String(date.getDate()).padStart(2, "0");
-
-    return `${year}-${month}-${day}`;
-  };
-
-  const formatDateForDemonstration = (dateString: Date) => {
-    const options: any = { day: "numeric", month: "long" };
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", options);
-  };
-
-  const { mutate: handleEventSubmit, isLoading } = useMutation({
-    mutationFn: async () => {
-      const payload: createEventNotificaitonType = {
-        name: userName,
-        event,
-        description,
-        date: formatDateForDatabase(date!),
-
-        // @ts-expect-error
-        phoneNumber,
-      };
-      await axios.post("/api/notification/event", payload);
-
-      if (!eventNotifications) {
-        await whatsappAxios.post("/", {
-          messaging_product: "whatsapp",
-          to: phoneNumber,
-          type: "template",
-          template: { name: "init", language: { code: "en" } },
-        });
-      } else {
-        await whatsappAxios.post("/", {
-          messaging_product: "whatsapp",
-          to: phoneNumber,
-          type: "text",
-          text: {
-            body: `Your reminder for ${event} on ${formatDateForDemonstration(
-              date!
-            )} has been set! 🚀 You'll receive reminders leading up to the deadline to make sure you're all set. 🕒`,
-          },
-        });
-      }
-    },
-    onError: (err) => {
-      if (err instanceof AxiosError) {
-        if (err.response?.status === 401) {
-          route.push("/sign-up");
-          return toast.error("You need to be login to do that!");
-        }
-        if (err.response?.status === 400) {
-          return toast.error("Please fill the valid data.");
-        }
-        return toast.error(
-          "There was an error on server side, please try again."
-        );
-      }
-    },
-    onSuccess: () => {
-      setEvent("");
-      setDescription("");
-      setDate(new Date());
-      setDrawerOpen(false);
-      route.refresh();
-      return toast.success("Your Notification has been set up successfully!");
-    },
-  });
 
   return (
     <div className="flex flex-col  justify-center  items-center sm:pb-10 pb-4 relative ">
-      <section className="flex flex-col sm:pb-12 pb-8 gap-2 text-center ustify-center   items-center sm:mt-0   ">
+      <section className="flex flex-col sm:pb-2 pb-8 gap-2 text-center ustify-center   items-center sm:mt-0   ">
         <h1 className="sm:text-4xl text-2xl text-white">
           Create Notification.
         </h1>
         <p className="text-slate-400 text-opacity-70 sm:text-sm text-xs font-light max-w-xl  ">
-          How does this work? select the date below, give the name and a little
-          description of the event and we will remind you before the event
-          TWICE!
+          Want to know how it works? Choose your registration method, name your
+          event, add a brief description, and we will send you reminders before
+          it starts.
         </p>
       </section>
 
-      <Calendar
-        mode="single"
-        selected={date}
-        onSelect={setDate}
-        className="rounded-md border w-fit"
-      />
+      <section className="sm:mb-4 mb-6 sm:mt-2 mt-0   w-full flex sm:justify-center justify-between ">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant={"outline"}
+              size={"sm"}
+              className=" sm:w-[65%] text-white w-fit"
+            >
+              <UnfoldVertical className="w-5 h-5" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="sm:max-w-fit max-w-[18rem]">
+            <DropdownMenuLabel>Choose a category</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuRadioGroup
+              value={state}
+              //@ts-ignore
+              onValueChange={setState}
+              className="flex flex-col gap-2 "
+            >
+              <DropdownMenuRadioItem value="CALENDAR" className="flex  gap-2">
+                <div className="flex items-center gap-2 justify-center ">
+                  <CalendarDays className="size-7" />
+                  <div className="grid gap-0.5">
+                    <p>Calendar</p>
+                    <p
+                      className="text-xs text-slate-400 text-opacity-70"
+                      data-description
+                    >
+                      Pick a date and create the event.
+                    </p>
+                  </div>
+                </div>
+              </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="PDF" className="flex  gap-2">
+                <div className="flex items-center justify-center gap-3 ">
+                  <File className="size-7" />
+                  <div className="grid gap-0.5">
+                    <p>PDF</p>
+                    <p
+                      className="text-xs text-slate-400 text-opacity-70"
+                      data-description
+                    >
+                      Upload a PDF and create multiple events.
+                    </p>
+                  </div>
+                </div>
+              </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="TEXT" className="flex gap-2">
+                <div className="flex items-center  gap-3 ">
+                  <WholeWord className="size-7" />
+                  <div className="grid gap-0.5">
+                    <p>Text</p>
+                    <p
+                      className="text-xs text-slate-400 text-opacity-70"
+                      data-description
+                    >
+                      Write down the event and its details manually
+                    </p>
+                  </div>
+                </div>
+              </DropdownMenuRadioItem>
+            </DropdownMenuRadioGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <section className="sm:hidden block">
+          <Sheet>
+            <SheetTrigger
+              asChild
+              className="h-full flex items-center justify-center"
+            >
+              <Button
+                variant={"secondary"}
+                className="flex fixed right-4 h-fit gap-2"
+              >
+                <p>Dashboard</p>
+                <ArrowRight className="h-5 w-4" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent>
+              <SheetHeader>
+                <SheetTitle>Notifications Dashboard</SheetTitle>
+                <SheetDescription>
+                  You will be reminded 24 hrs before the deadline.
+                </SheetDescription>
+              </SheetHeader>
 
-      <Drawer>
-        <DrawerTrigger asChild>
-          <Button
-            className="flex gap-2 mt-5 sm:w-fit w-full  hover:bg-[#0ea5e9]/90 bg-[#0ea5e9] text-black sm:font-normal font-bold sm:text-sm  text-lg"
-            onClick={() => setDrawerOpen(true)}
-          >
-            <p>
-              <span className="font-bold">
-                {formatDateForDemonstration(date!)},{" "}
-              </span>
-              Next
-            </p>
-            <ArrowRight className="sm:w-4 sm:h-4 w-5 h-5" />
-          </Button>
-        </DrawerTrigger>
-        {drawerOpen && (
-          <DrawerContent>
-            <div className="mx-auto sm:py-0 py-2 w-full max-w-md">
-              <DrawerHeader className="my-2 sm:my-0">
-                <DrawerTitle className="text-white  sm:text-xl text-2xl">
-                  Set up an Event for{" "}
-                  <span className="text-[#0ea5e9]">
-                    {formatDateForDemonstration(date!)}!
-                  </span>
-                </DrawerTitle>
-                <DrawerDescription className="sm:text-sm text-xs">
-                  Give the name and a little description of the Event.
-                </DrawerDescription>
-              </DrawerHeader>
-              <div className="p-4 pb-4 pt-6  gap-6 flex flex-col">
-                <div className="grid gap-2">
-                  <Label htmlFor="Name">Event Name</Label>
-                  <Input
-                    type="Name"
-                    id="Name"
-                    placeholder="Birthday"
-                    className="text-white"
-                    value={event}
-                    onChange={(e) => setEvent(e.target.value)}
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="Description">Event Description</Label>
-                  <Input
-                    className="text-white"
-                    id="Description"
-                    placeholder="About my bestfriend's 19th birthday celebration."
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                  />
-                </div>
+              <div className="w-full h-full pt-3">
+                <NotificationTable eventNotifications={eventNotifications} />
               </div>
-              <DrawerFooter>
-                <Button
-                  className=" hover:bg-[#0ea5e9]/90 bg-[#0ea5e9] text-white"
-                  isLoading={isLoading}
-                  // @ts-ignore
-                  onClick={handleEventSubmit}
-                >
-                  Submit
-                </Button>
-                <DrawerClose asChild>
-                  <Button variant="outline">Cancel</Button>
-                </DrawerClose>
-              </DrawerFooter>
-            </div>
-          </DrawerContent>
-        )}
-      </Drawer>
+
+              <SheetFooter>
+                <SheetClose asChild>
+                  <Button type="submit">Save changes</Button>
+                </SheetClose>
+              </SheetFooter>
+            </SheetContent>
+          </Sheet>
+        </section>
+      </section>
+      {state === "CALENDAR" && (
+        // @ts-ignore
+        <Calendar user={user!} eventNotifications={eventNotifications} />
+      )}
+      {state === "PDF" && (
+        // @ts-ignore
+        <PdfUpload user={user} />
+      )}
+      {state === "TEXT" && (
+        // @ts-ignore
+        <Textbox />
+      )}
     </div>
   );
 };
