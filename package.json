@@ -48,6 +48,7 @@
     "@types/pdf-parse": "^1.1.4",
     "@upstash/ratelimit": "^0.4.4",
     "@upstash/redis": "^1.24.2",
+    "@vercel/analytics": "^1.2.2",
     "axios": "^1.6.8",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",

@@ -7,6 +7,8 @@ import { Toaster } from "react-hot-toast";
 import Provider from "@/app/_trpc/provider";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/NavBar";
+// @ts-expect-error
+import { Analytics } from "@vercel/analytics/react";
 import { dark } from "@clerk/themes";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -51,6 +53,7 @@ export default function RootLayout({
             </ClerkProvider>
           </ThemeProvider>
         </Provider>
+        <Analytics />
       </body>
     </html>
   );
