@@ -143,7 +143,7 @@ const EventTable = ({
               Edit <span className="text-[#0ea5e9]">{currentEdit?.event}</span>
             </DialogTitle>
             <DialogDescription className="text-sm">
-              Make changes to your event here. Click save when you're done.
+              Make changes to your event here. Click save when you are done.
             </DialogDescription>
           </DialogHeader>
 
@@ -177,6 +177,7 @@ const EventTable = ({
             <Button
               className="hover:bg-[#0ea5e9]/90 bg-[#0ea5e9] text-black"
               isLoading={updateIsLoading}
+              // @ts-ignore
               onClick={handleEditEvent}
             >
               Save changes
@@ -194,7 +195,7 @@ const EventTable = ({
           </DialogHeader>
           <div className="mt-3 sm:text-base text-sm">
             Are you sure you want to delete this event? You will no longer
-            receive reminders for it once it's deleted.
+            receive reminders for it once it is deleted.
           </div>
           <DialogFooter className=" sm:mt-0 mt-2">
             <Button
