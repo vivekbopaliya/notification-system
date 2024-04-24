@@ -79,7 +79,7 @@ const PdfUpload = ({ user }: { user: User }) => {
       route.refresh();
       setPdf(null);
       return toast.success(
-        "Your PDF has been uploaded successfully and notifications have been set up."
+        "Your PDF has been uploaded successfully and all the notifications have been set up."
       );
     },
   });
