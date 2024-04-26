@@ -24,7 +24,7 @@ function Calendar({
         month: "space-y-4 ",
         caption:
           "flex justify-center pt-3 pb-4 relative items-center text-white",
-        caption_label: "text-sm text-sm font-medium text-white",
+        caption_label: "sm:text-base text-sm font-medium text-white",
         nav: "space-x-1 flex items-center",
         nav_button: cn(
           buttonVariants(),

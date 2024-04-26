@@ -47,11 +47,15 @@ const PdfUpload = ({ user }: { user: User }) => {
         "phoneNumber",
         user?.phoneNumbers[0].phoneNumber.slice(1) || ""
       );
-      const res = await axios.post("http://127.0.0.1:8000/pdf", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_BE2_URL!}/pdf`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       const whatsappreas = await whatsappAxios.post("/", {
         messaging_product: "whatsapp",
@@ -63,14 +67,14 @@ const PdfUpload = ({ user }: { user: User }) => {
       });
       console.log(whatsappreas);
     },
-    onError: (err) => {
-      if (err instanceof AxiosError) {
-        if (err.status === 400) {
-          return toast.error(
-            "Please read the rules carefully and reassure if your file follows the same structure."
-          );
-        }
+    onError: (err: any) => {
+      if (err.response?.status === 401) {
+        return toast.error(
+          "Please read the rules carefully and reassure if your file follows the same structure."
+        );
       }
+      route.refresh();
+
       return toast.error(
         "Something went wrong on server side, please try again."
       );

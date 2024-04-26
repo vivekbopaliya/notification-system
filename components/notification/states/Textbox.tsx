@@ -6,13 +6,53 @@ import { Input } from "@/components/ui/input-gradient";
 import { Button } from "@/components/ui/button";
 import { ArrowUp } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { User } from "@clerk/nextjs/server";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { whatsappAxios } from "@/lib/utils/whatsapp/config";
 
-export function Textbox() {
+export function Textbox({ user }: { user: User }) {
+  const route = useRouter();
+
+  const phoneNumber = user?.phoneNumbers[0].phoneNumber.slice(1);
+
   const [text, setText] = React.useState("");
   const { mutate: handleSubmit, isLoading } = useMutation({
     mutationFn: async () => {
-      const data = await axios.post("http://127.0.0.1:8000/chat", text);
+      const formData = new FormData();
+      formData.append("text", text);
+      formData.append("name", user?.firstName || "");
+      formData.append(
+        "phoneNumber",
+        user?.phoneNumbers[0].phoneNumber.slice(1) || ""
+      );
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_BE2_URL!}/text`,
+        formData
+      );
+
+      await whatsappAxios.post("/", {
+        messaging_product: "whatsapp",
+        to: phoneNumber,
+        type: "text",
+        text: {
+          body: res,
+        },
+      });
+    },
+    onSuccess: () => {
+      route.refresh();
+      setText("");
+      return toast.success("Your events have been set up!");
+    },
+    onError: (err: any) => {
+      if (err.response?.status === 401) {
+        return toast.error(
+          " Please structure your event according to the provided format."
+        );
+      }
+      return toast.error("Something went wrong on server, please try again.");
     },
   });
   return (
@@ -43,6 +83,8 @@ export function Textbox() {
         </div>
 
         <Button
+          // @ts-ignore
+          onClick={handleSubmit}
           isLoading={isLoading}
           className=" dark:bg-blue-700/[0.2] dark:text-blue-500 hover:bg-blue-800  sm:mt-7 mt-4 sm:-mb-6 -mb-5 sm:w-fit w-full   font-bold sm:text-base  text-lg"
         >

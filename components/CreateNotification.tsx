@@ -174,7 +174,7 @@ const CreateNotification = ({
       )}
       {state === "TEXT" && (
         // @ts-ignore
-        <Textbox />
+        <Textbox user={user} />
       )}
     </div>
   );
